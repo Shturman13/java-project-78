@@ -18,7 +18,7 @@ public class StringSchema extends BaseSchema<String> {
     public StringSchema minLength(Integer length) {
         Predicate<String> minLength = stringToValidate ->
                 stringToValidate != null && stringToValidate.length() >= length;
-        addPredicate("required", minLength);
+        addPredicate("minLength", minLength);
         return this;
     }
 
