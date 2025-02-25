@@ -12,39 +12,32 @@ public class ValidatorStringSchemaTest {
 
     @Test
     public void testStringSchema() {
+        var testString = "what the f";
+
         var actualInitial = newValidatorObject().isValid("");
-        var expectedInitial = true;
-        assertThat(actualInitial).isEqualTo(expectedInitial);
+        assertThat(actualInitial).isEqualTo(true);
 
         var actualAfterRequired = newValidatorObject().required().isValid("");
-        var expectedAfterRequired = false;
-        assertThat(actualAfterRequired).isEqualTo(expectedAfterRequired);
+        assertThat(actualAfterRequired).isEqualTo(false);
 
-        var actualAfterMinLengthT = newValidatorObject().minLength(3).isValid("what the f");
-        var expectedAfterMinLengthT = true;
-        assertThat(actualAfterMinLengthT).isEqualTo(expectedAfterMinLengthT);
+        var actualAfterMinLengthT = newValidatorObject().minLength(3).isValid(testString);
+        assertThat(actualAfterMinLengthT).isEqualTo(true);
 
-        var actualAfterMinLengthF = newValidatorObject().minLength(10).isValid("what f");
-        var expectedAfterMinLengthF = false;
-        assertThat(actualAfterMinLengthF).isEqualTo(expectedAfterMinLengthF);
+        var actualAfterMinLengthF = newValidatorObject().minLength(11).isValid(testString);
+        assertThat(actualAfterMinLengthF).isEqualTo(false);
 
-        var actualAfterContainsT = newValidatorObject().contains("what").isValid("what the f");
-        var expectedAfterContainsT = true;
-        assertThat(actualAfterContainsT).isEqualTo(expectedAfterContainsT);
+        var actualAfterContainsT = newValidatorObject().contains("what").isValid(testString);
+        assertThat(actualAfterContainsT).isEqualTo(true);
 
-        var actualAfterContainsF = newValidatorObject().contains("whatth").isValid("what the f");
-        var expectedAfterContainsF = false;
-        assertThat(actualAfterContainsF).isEqualTo(expectedAfterContainsF);
+        var actualAfterContainsF = newValidatorObject().contains("whatth").isValid(testString);
+        assertThat(actualAfterContainsF).isEqualTo(false);
 
         var actualComplexValueT = newValidatorObject().required().minLength(10)
-                .minLength(4).contains("wha").isValid("what the f");
-        var expectedComplexValueT = true;
-        assertThat(actualComplexValueT).isEqualTo(expectedComplexValueT);
+                .minLength(4).contains("wha").isValid(testString);
+        assertThat(actualComplexValueT).isEqualTo(true);
 
         var actualComplexValueF = newValidatorObject().required().minLength(10)
-                .minLength(4).contains("whatth").isValid("what the f");
-        var expectedComplexValueF = false;
-        assertThat(actualComplexValueF).isEqualTo(expectedComplexValueF);
-
+                .minLength(4).contains("whatth").isValid(testString);
+        assertThat(actualComplexValueF).isEqualTo(false);
     }
 }

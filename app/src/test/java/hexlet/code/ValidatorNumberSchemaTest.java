@@ -14,38 +14,30 @@ public class ValidatorNumberSchemaTest {
     @Test
     public void testNumberSchema() {
         var actualInitial = newValidatorObject().isValid(null);
-        var expectedInitial = true;
-        assertThat(actualInitial).isEqualTo(expectedInitial);
+        assertThat(actualInitial).isEqualTo(true);
 
         var actualAfterRequired = newValidatorObject().required().isValid(null);
-        var expectedAfterRequired = false;
-        assertThat(actualAfterRequired).isEqualTo(expectedAfterRequired);
+        assertThat(actualAfterRequired).isEqualTo(false);
 
         var actualAfterPositiveT = newValidatorObject().positive().isValid(3);
-        var expectedAfterPositiveT = true;
-        assertThat(actualAfterPositiveT).isEqualTo(expectedAfterPositiveT);
+        assertThat(actualAfterPositiveT).isEqualTo(true);
 
         var actualAfterPositiveF = newValidatorObject().positive().isValid(-5);
-        var expectedAfterPositiveF = false;
-        assertThat(actualAfterPositiveF).isEqualTo(expectedAfterPositiveF);
+        assertThat(actualAfterPositiveF).isEqualTo(false);
 
         var actualAfterRangeT = newValidatorObject().range(5, 10).isValid(7);
-        var expectedAfterRangeT = true;
-        assertThat(actualAfterRangeT).isEqualTo(expectedAfterRangeT);
+        assertThat(actualAfterRangeT).isEqualTo(true);
 
         var actualAfterRangeF = newValidatorObject().range(5, 10).isValid(3);
-        var expectedAfterRangeF = false;
-        assertThat(actualAfterRangeF).isEqualTo(expectedAfterRangeF);
+        assertThat(actualAfterRangeF).isEqualTo(false);
 
         var actualComplexValueT = newValidatorObject().required().positive()
                 .range(3, 5).range(5, 10).isValid(7);
-        var expectedComplexValueT = true;
-        assertThat(actualComplexValueT).isEqualTo(expectedComplexValueT);
+        assertThat(actualComplexValueT).isEqualTo(true);
 
         var actualComplexValueF = newValidatorObject().required().positive()
                 .range(2, 5).range(5, 10).isValid(3);
-        var expectedComplexValueF = false;
-        assertThat(actualComplexValueF).isEqualTo(expectedComplexValueF);
+        assertThat(actualComplexValueF).isEqualTo(false);
 
     }
 }
