@@ -1,7 +1,5 @@
 package hexlet.code.schemas;
 
-import hexlet.code.BaseSchema;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
