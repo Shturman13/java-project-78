@@ -5,30 +5,30 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class MapSchema<T, S> extends BaseSchema<Map<T, T>> {
-    public void addPredicate(String key, Predicate<Map<T, T>> predicate) {
+public class MapSchema extends BaseSchema<Map<?, ?>> {
+    public void addPredicate(String key, Predicate<Map<?, ?>> predicate) {
         check.put(key, predicate);
     }
 
-    public MapSchema<T, S> required() {
-        Predicate<Map<T, T>> required = Objects::nonNull;
+    public MapSchema required() {
+        Predicate<Map<?, ?>> required = Objects::nonNull;
         addPredicate("required", required);
         return this;
     }
 
-    public MapSchema<T, S> sizeof(Integer numberOfElements) {
-        Predicate<Map<T, T>> sizeof = mapToValidate ->
+    public MapSchema sizeof(Integer numberOfElements) {
+        Predicate<Map<?, ?>> sizeof = mapToValidate ->
                 mapToValidate != null && mapToValidate.size() == numberOfElements;
         addPredicate("sizeof", sizeof);
         return this;
     }
 
-    public MapSchema<T, S> shape(Map<T, BaseSchema<T>> schema) {
-        Predicate<Map<T, T>> shape = detailsMapToValidate -> {
+    public <T> MapSchema shape(Map<?, BaseSchema<T>> schema) {
+        Predicate<Map<?, ?>> shape = detailsMapToValidate -> {
             var values = new ArrayList<Boolean>();
             detailsMapToValidate.forEach((key, value) -> {
                 if (schema.containsKey(key)) {
-                    values.add(schema.get(key).isValid(value));
+                    values.add(schema.get(key).isValid((T) value));
                 }
             });
             return !values.contains(false);

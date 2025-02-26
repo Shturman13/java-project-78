@@ -1,7 +1,6 @@
 package hexlet.code;
 
 import hexlet.code.schemas.BaseSchema;
-import hexlet.code.schemas.MapSchema;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -49,7 +48,7 @@ public class ValidatorMapSchemaTest {
         var staticTestMap5 = Map.of("firstName", "Dmitrii", "middleName", "Nikolay");
 
         var v = new Validator();
-        MapSchema<String, String> vMap = v.map();
+        var vMap = v.map();
 
         Map<String, BaseSchema<String>> staticSchema1 = Map.of("firstName", v.string(), "lastName", v.string());
         Map<String, BaseSchema<String>> staticSchema2 = Map.of("firstName", v.string().required(),
@@ -84,7 +83,7 @@ public class ValidatorMapSchemaTest {
         assertThat(actualContainsStringT).isEqualTo(true);
 
         var actualKeyNotExistT = vMap.shape(staticSchema3).isValid(staticTestMap5);
-        assertThat(actualContainsStringT).isEqualTo(true);
+        assertThat(actualKeyNotExistT).isEqualTo(true);
 
     }
 
@@ -99,7 +98,7 @@ public class ValidatorMapSchemaTest {
         var staticTestMap5 = Map.of(50, 25, 10, 20);
 
         var v = new Validator();
-        MapSchema<Integer, Integer> vMapInteger = v.map();
+        var vMapInteger = v.map();
 
         Map<Integer, BaseSchema<Integer>> staticSchema1 = Map.of(1, v.number(), 2, v.number());
         Map<Integer, BaseSchema<Integer>> staticSchema2 = Map.of(10, v.number().required(),

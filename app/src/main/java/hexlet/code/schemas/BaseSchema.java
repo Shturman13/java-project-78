@@ -1,11 +1,11 @@
 package hexlet.code.schemas;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
 public abstract class BaseSchema<T> {
-    protected Map<String, Predicate<T>> check = new HashMap<>();
+    protected Map<String, Predicate<T>> check = new LinkedHashMap<>();
 
     public boolean isValid(T valueToValidate) throws IllegalStateException {
         if (check.isEmpty()) {
