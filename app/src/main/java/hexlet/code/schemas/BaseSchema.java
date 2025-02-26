@@ -11,6 +11,10 @@ public abstract class BaseSchema<T> {
         if (check.isEmpty()) {
             return true;
         }
+
+        if (check.containsKey("required") && valueToValidate == null) {
+            return false;
+        }
         return check.values().stream().allMatch((predicate -> predicate.test(valueToValidate)));
     }
 }
