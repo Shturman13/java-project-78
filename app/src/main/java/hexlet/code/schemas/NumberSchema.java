@@ -15,7 +15,7 @@ public class NumberSchema extends BaseSchema<Integer> {
     }
 
     public NumberSchema positive() {
-        Predicate<Integer> positive = numberToValidate -> numberToValidate != null && numberToValidate > 0;
+        Predicate<Integer> positive = numberToValidate -> numberToValidate == null || numberToValidate > 0;
         addPredicate("positive", positive);
         return this;
     }
