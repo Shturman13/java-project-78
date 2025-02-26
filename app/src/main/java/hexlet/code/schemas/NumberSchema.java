@@ -15,13 +15,14 @@ public class NumberSchema extends BaseSchema<Integer> {
     }
 
     public NumberSchema positive() {
-        Predicate<Integer> positive = numberToValidate -> numberToValidate > 0;
+        Predicate<Integer> positive = numberToValidate -> numberToValidate != null && numberToValidate > 0;
         addPredicate("positive", positive);
         return this;
     }
 
     public NumberSchema range(Integer min, Integer max) {
-        Predicate<Integer> range = numberToValidate -> numberToValidate >= min && numberToValidate <= max;
+        Predicate<Integer> range = numberToValidate ->
+                numberToValidate != null && numberToValidate >= min && numberToValidate <= max;
         addPredicate("range", range);
         return this;
     }

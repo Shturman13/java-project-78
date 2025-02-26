@@ -132,4 +132,47 @@ public class ValidatorMapSchemaTest {
         assertThat(actualKeyNotExistT).isEqualTo(true);
 
     }
+
+    @Test
+    public void testMapDataSchemaStringNumber() {
+        var staticTestMap1 = Map.of("firstNumber", 4, "secondNumber", 5);
+        var staticTestMap2 = Map.of("firstNumber", 15, "secondNumber", 20);
+        var staticTestMap3 = new HashMap<String, Integer>();
+        staticTestMap3.put("firstNumber", 25);
+        staticTestMap3.put("secondNumber", null);
+        var staticTestMap4 = Map.of("firstNumber", -3, "secondNumber", 4);
+        var staticTestMap5 = Map.of("firstNumber", 25, "thirdNumber", 20);
+
+        var v = new Validator();
+        var vMapStringInteger = v.map();
+
+        Map<String, BaseSchema<Integer>> staticSchema1 = Map.of("firstNumber", v.number(), "secondNumber", v.number());
+        Map<String, BaseSchema<Integer>> staticSchema2 = Map.of("firstNumber", v.number().required(),
+                "secondNumber", v.number().required().positive());
+        Map<String, BaseSchema<Integer>> staticSchema3 = Map.of("firstNumber", v.number().required().range(16, 30),
+                "secondNumber", v.number().required());
+        Map<String, BaseSchema<Integer>> staticSchema31 = Map.of("firstNumber", v.number().required().range(16, 30),
+                "secondNumber", v.number());
+        Map<String, BaseSchema<Integer>> staticSchema4 = Map.of("firstNumber", v.number().positive(),
+                "secondNumber", v.number().range(2, 5));
+
+        var actualInitial = vMapStringInteger.shape(staticSchema1).isValid(staticTestMap1);
+        assertThat(actualInitial).isEqualTo(true);
+
+        var actualRequiredPositiveT = vMapStringInteger.shape(staticSchema2).isValid(staticTestMap2);
+        assertThat(actualRequiredPositiveT).isEqualTo(true);
+
+        var actualRangeRequiredF = vMapStringInteger.shape(staticSchema3).isValid(staticTestMap3);
+        assertThat(actualRangeRequiredF).isEqualTo(false);
+
+        var actualRangeT = vMapStringInteger.shape(staticSchema31).isValid(staticTestMap3);
+        assertThat(actualRangeT).isEqualTo(true);
+
+        var actualPositiveRangeF = vMapStringInteger.shape(staticSchema4).isValid(staticTestMap4);
+        assertThat(actualPositiveRangeF).isEqualTo(false);
+
+        var actualKeyNotExist = vMapStringInteger.shape(staticSchema31).isValid(staticTestMap5);
+        assertThat(actualKeyNotExist).isEqualTo(true);
+    }
+
 }
