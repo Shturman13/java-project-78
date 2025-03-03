@@ -1,6 +1,5 @@
 package hexlet.code.schemas;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -47,15 +46,15 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
      * @return MapSchema to have possibility to put in chain
      */
     public <T> MapSchema shape(Map<?, BaseSchema<T>> schema) {
-        Predicate<Map<?, ?>> shape = detailsMapToValidate -> {
-            var values = new ArrayList<Boolean>();
-            detailsMapToValidate.forEach((key, value) -> {
-                if (schema.containsKey(key)) {
-                    values.add(schema.get(key).isValid((T) value));
-                }
-            });
-            return !values.contains(false);
-        };
+        Predicate<Map<?, ?>> shape = detailedMapToValidate -> detailedMapToValidate.entrySet()
+                .stream().allMatch(pair -> {
+                    BaseSchema<T> baseSchema = schema.get(pair.getKey());
+                    if (baseSchema == null) {
+                        return true;
+                    }
+                    T value = (T) pair.getValue();
+                    return baseSchema.isValid(value);
+                });
         addPredicate("shape", shape);
         return this;
     }
